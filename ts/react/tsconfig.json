@@ -15,7 +15,6 @@
     // JavaScript support
     "allowJs": false,
     "checkJs": false,
-    "jsx": "preserve",
 
     // Interop constraints
     "esModuleInterop": false,

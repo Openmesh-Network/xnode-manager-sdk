@@ -6,10 +6,7 @@ export default [
     output: {
       file: "dist/index.js",
     },
-    external: ["@openmesh-network/xnode-manager-sdk", "@tanstack/react-query", "react"],
-    jsx: {
-      mode: "preserve"
-    }
+    external: ["@openmesh-network/xnode-manager-sdk", "@tanstack/react-query", "react"]
   },
   {
     input: "build/index.d.ts",
@@ -17,9 +14,6 @@ export default [
       file: "dist/index.d.ts",
     },
     external: ["@openmesh-network/xnode-manager-sdk", "@tanstack/react-query", "react"],
-    jsx: {
-      mode: "preserve"
-    },
     plugins: [dts()],
   },
   {
@@ -29,8 +23,5 @@ export default [
       format: "cjs",
     },
     external: ["@openmesh-network/xnode-manager-sdk", "@tanstack/react-query", "react"],
-    jsx: {
-      mode: "preserve"
-    },
   },
 ];

@@ -7,4 +7,4 @@ export * from "./request.js";
 export * from "./usage.js";
 export * from "./utils.js";
 
-export * from "./provider.jsx";
+export * from "./provider.js";
