@@ -1,120 +1,99 @@
 import * as rust from "../utils/rust-types.js";
 
-import type { Session } from "../utils/session.js";
-import type { Directory, File } from "./models.js";
+import { SessionGet, SessionPost, type Sessioned } from "../utils/session.js";
+import type {
+  CreateDirectory,
+  Directory,
+  File,
+  ReadDirectory,
+  ReadFile,
+  RemoveDirectory,
+  RemoveFile,
+  WriteFile,
+} from "./models.js";
 
 export function scope() {
   return "/file";
 }
 
-export async function read_file({
-  session,
-  location,
-}: {
-  session: Session;
-  location: {
-    container: rust.String;
-    path: rust.String;
-  };
-}): Promise<File> {
-  return session.axiosInstance
-    .post(`${session.baseUrl}${scope()}/read_file`, {
-      location,
-    })
-    .then((res) => res.data as File);
+export type read_file_input = Sessioned<{
+  path: { container: rust.String };
+  query: ReadFile;
+}>;
+export type read_file_output = File;
+export async function read_file(
+  input: read_file_input
+): Promise<read_file_output> {
+  return SessionGet(input, scope(), (path) => `/read_file/${path.container}`);
 }
 
-export async function write_file({
-  session,
-  location,
-  content,
-}: {
-  session: Session;
-  location: {
-    container: rust.String;
-    path: rust.String;
-  };
-  content: rust.u8[];
-}): Promise<void> {
-  await session.axiosInstance.post(`${session.baseUrl}${scope()}/write_file`, {
-    location,
-    content,
-  });
+export type write_file_input = Sessioned<{
+  path: { container: rust.String };
+  data: WriteFile;
+}>;
+export type write_file_output = void;
+export async function write_file(
+  input: write_file_input
+): Promise<write_file_output> {
+  return SessionPost(input, scope(), (path) => `/write_file/${path.container}`);
 }
 
-export async function remove_file({
-  session,
-  location,
-}: {
-  session: Session;
-  location: {
-    container: rust.String;
-    path: rust.String;
-  };
-}): Promise<void> {
-  return session.axiosInstance.post(
-    `${session.baseUrl}${scope()}/remove_file`,
-    {
-      location,
-    }
+export type remove_file_input = Sessioned<{
+  path: { container: rust.String };
+  data: RemoveFile;
+}>;
+export type remove_file_output = void;
+export async function remove_file(
+  input: remove_file_input
+): Promise<remove_file_output> {
+  return SessionPost(
+    input,
+    scope(),
+    (path) => `/remove_file/${path.container}`
   );
 }
 
-export async function read_directory({
-  session,
-  location,
-}: {
-  session: Session;
-  location: {
-    container: rust.String;
-    path: rust.String;
-  };
-}): Promise<Directory> {
-  return session.axiosInstance
-    .post(`${session.baseUrl}${scope()}/read_directory`, {
-      location,
-    })
-    .then((res) => res.data as Directory);
-}
-
-export async function create_directory({
-  session,
-  location,
-  make_parent,
-}: {
-  session: Session;
-  location: {
-    container: rust.String;
-    path: rust.String;
-  };
-  make_parent: rust.bool;
-}): Promise<void> {
-  return session.axiosInstance.post(
-    `${session.baseUrl}${scope()}/remove_directory`,
-    {
-      location,
-      make_parent,
-    }
+export type read_directory_input = Sessioned<{
+  path: { container: rust.String };
+  query: ReadDirectory;
+}>;
+export type read_directory_output = Directory;
+export async function read_directory(
+  input: read_directory_input
+): Promise<read_directory_output> {
+  return SessionGet(
+    input,
+    scope(),
+    (path) => `/read_directory/${path.container}`
   );
 }
 
-export async function remove_directory({
-  session,
-  location,
-  make_empty,
-}: {
-  session: Session;
-  location: {
-    container: rust.String;
-    path: rust.String;
-  };
-  make_empty: rust.bool;
-}): Promise<void> {
-  return session.axiosInstance.post(
-    `${session.baseUrl}${scope()}/remove_directory`,
-    {
-      location,
-      make_empty,
-    }
+export type create_directory_input = Sessioned<{
+  path: { container: rust.String };
+  data: CreateDirectory;
+}>;
+export type create_directory_output = void;
+export async function create_directory(
+  input: create_directory_input
+): Promise<create_directory_output> {
+  return SessionPost(
+    input,
+    scope(),
+    (path) => `/create_directory/${path.container}`
+  );
+}
+
+export type remove_directory_input = Sessioned<{
+  path: { container: rust.String };
+  data: RemoveDirectory;
+}>;
+export type remove_directory_output = void;
+export async function remove_directory(
+  input: remove_directory_input
+): Promise<remove_directory_output> {
+  return SessionPost(
+    input,
+    scope(),
+    (path) => `/remove_directory/${path.container}`
   );
 }

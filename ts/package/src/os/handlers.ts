@@ -1,29 +1,19 @@
 import type { RequestIdResponse } from "../request/models.js";
 import type { OSChange, OSConfiguration } from "./models.js";
-import type { Session } from "../utils/session.js";
+import { SessionGet, SessionPost, type Sessioned } from "../utils/session.js";
 
 export function scope() {
   return "/os";
 }
 
-export async function get({
-  session,
-}: {
-  session: Session;
-}): Promise<OSConfiguration> {
-  return session.axiosInstance
-    .get(`${session.baseUrl}${scope()}/get`)
-    .then((res) => res.data as OSConfiguration);
+export type get_input = Sessioned<{}>;
+export type get_output = OSConfiguration;
+export async function get(input: get_input): Promise<get_output> {
+  return SessionGet(input, scope(), "/get");
 }
 
-export async function set({
-  session,
-  os,
-}: {
-  session: Session;
-  os: OSChange;
-}): Promise<RequestIdResponse> {
-  return session.axiosInstance
-    .post(`${session.baseUrl}${scope()}/set`, os)
-    .then((res) => res.data as RequestIdResponse);
+export type set_input = Sessioned<{ data: OSChange }>;
+export type set_output = RequestIdResponse;
+export async function set(input: set_input): Promise<set_output> {
+  return SessionPost(input, scope(), "/set");
 }

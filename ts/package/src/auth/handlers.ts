@@ -3,29 +3,32 @@ import * as rust from "../utils/rust-types.js";
 import axios from "axios";
 import { type Hex, parseSignature, toBytes } from "viem";
 import type { Scope } from "./models.js";
-import type { Session } from "../utils/session.js";
+import {
+  SessionGet,
+  SessionPost,
+  type Session,
+  type Sessioned,
+} from "../utils/session.js";
 
 export function scope() {
   return "/auth";
 }
 
-export async function scopes({
-  session,
-}: {
-  session: Session;
-}): Promise<rust.Vec<Scope>> {
-  return session.axiosInstance
-    .get(`${session.baseUrl}${scope()}/scopes`)
-    .then((res) => res.data as rust.Vec<Scope>);
+export type scopes_input = Sessioned<{}>;
+export type scopes_output = rust.Vec<Scope>;
+export async function scopes(input: scopes_input): Promise<scopes_output> {
+  return SessionGet(input, scope(), "/scopes");
 }
 
+export type login_input = {
+  baseUrl: string;
+  sig: Hex;
+};
+export type login_output = Session;
 export async function login({
   baseUrl,
   sig,
-}: {
-  baseUrl: string;
-  sig: Hex;
-}): Promise<Session> {
+}: login_input): Promise<login_output> {
   const axiosInstance = axios.create({
     withCredentials: true, // Store cookies
   });
@@ -41,9 +44,11 @@ export async function login({
     },
   });
 
-  return { axiosInstance, baseUrl };
+  return { axiosInstance, baseUrl } satisfies login_output;
 }
 
-export async function logout({ session }: { session: Session }): Promise<void> {
-  return session.axiosInstance.get(`${session.baseUrl}${scope()}/logout`);
+export type logout_input = Sessioned<{}>;
+export type logout_output = void;
+export async function logout(input: logout_input): Promise<logout_output> {
+  return SessionPost(input, scope(), "/logout");
 }

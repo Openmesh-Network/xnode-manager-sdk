@@ -1,35 +1,30 @@
 import type { Output } from "../utils/output.js";
 import * as rust from "../utils/rust-types.js";
 
-export interface Location {
-  container: rust.String;
+export interface ReadFile {
   path: rust.String;
 }
 
-export interface ReadFile {
-  location: Location;
-}
-
 export interface WriteFile {
-  location: Location;
+  path: rust.String;
   content: rust.Vec<rust.u8>;
 }
 
 export interface RemoveFile {
-  location: Location;
+  path: rust.String;
 }
 
 export interface ReadDirectory {
-  location: Location;
+  path: rust.String;
 }
 
 export interface CreateDirectory {
-  location: Location;
+  path: rust.String;
   make_parent: rust.bool;
 }
 
 export interface RemoveDirectory {
-  location: Location;
+  path: rust.String;
   make_empty: rust.bool;
 }
 
