@@ -76,6 +76,9 @@ export function useConfigChange(
         awaitRequest({ request: { session, path: { request_id } } }).then(() =>
           Promise.all(
             [
+              queryClient.invalidateQueries({
+                queryKey: ["useConfigContainers", session.baseUrl],
+              }),
               ...data
                 .reduce((prev, cur) => {
                   const container =
