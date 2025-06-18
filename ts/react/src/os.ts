@@ -53,3 +53,14 @@ export function useOsSet(
     input?.overrides
   );
 }
+
+export function useOsReboot(
+  input: UseMutationInput<xnode.os.reboot_input, xnode.os.reboot_output> = {}
+): UseMutationOutput<xnode.os.reboot_input, xnode.os.reboot_output> {
+  return useMutation(
+    {
+      mutationFn: xnode.os.reboot,
+    },
+    input?.overrides
+  );
+}

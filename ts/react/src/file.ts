@@ -11,7 +11,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 export function useFileReadFile({
   session,
-  container,
+  scope,
   path,
   overrides,
 }: UseQueryInput<
@@ -23,19 +23,19 @@ export function useFileReadFile({
       queryKey: [
         "useFileReadFile",
         session?.baseUrl ?? "",
-        container ?? "",
+        scope ?? "",
         path ?? "",
       ],
-      enabled: !!session && !!container && !!path,
+      enabled: !!session && !!scope && !!path,
       refetchInterval: 10_000, // 10 seconds
       queryFn: async () => {
-        if (!session || !container || !path) {
+        if (!session || !scope || !path) {
           return undefined;
         }
 
         return await xnode.file.read_file({
           session,
-          path: { container },
+          path: { scope },
           query: { path },
         });
       },
@@ -59,12 +59,7 @@ export function useFileWriteFile(
       mutationFn: xnode.file.write_file,
       onSuccess: (_, { session, path, data }) => {
         queryClient.invalidateQueries({
-          queryKey: [
-            "useFileReadFile",
-            session.baseUrl,
-            path.container,
-            data.path,
-          ],
+          queryKey: ["useFileReadFile", session.baseUrl, path.scope, data.path],
         });
       },
     },
@@ -87,12 +82,7 @@ export function useFileRemoveFile(
       mutationFn: xnode.file.remove_file,
       onSuccess: (_, { session, path, data }) => {
         queryClient.invalidateQueries({
-          queryKey: [
-            "useFileReadFile",
-            session.baseUrl,
-            path.container,
-            data.path,
-          ],
+          queryKey: ["useFileReadFile", session.baseUrl, path.scope, data.path],
         });
       },
     },
@@ -102,7 +92,7 @@ export function useFileRemoveFile(
 
 export function useFileReadDirectory({
   session,
-  container,
+  scope,
   path,
   overrides,
 }: UseQueryInput<
@@ -114,19 +104,19 @@ export function useFileReadDirectory({
       queryKey: [
         "useFileReadDirectory",
         session?.baseUrl ?? "",
-        container ?? "",
+        scope ?? "",
         path ?? "",
       ],
-      enabled: !!session && !!container && !!path,
+      enabled: !!session && !!scope && !!path,
       refetchInterval: 10_000, // 10 seconds
       queryFn: async () => {
-        if (!session || !container || !path) {
+        if (!session || !scope || !path) {
           return undefined;
         }
 
         return await xnode.file.read_directory({
           session,
-          path: { container },
+          path: { scope },
           query: { path },
         });
       },
@@ -153,7 +143,7 @@ export function useFileCreateDirectory(
           queryKey: [
             "useFileReadDirectory",
             session.baseUrl,
-            path.container,
+            path.scope,
           ].concat(data.make_parent ? [] : [data.path]), // make parent can effect other paths, refresh all
         });
       },
@@ -180,14 +170,10 @@ export function useFileRemoveDirectory(
           // make make_empty can effect other paths, including files, refresh all
           Promise.all([
             queryClient.invalidateQueries({
-              queryKey: ["useFileReadFile", session.baseUrl, path.container],
+              queryKey: ["useFileReadFile", session.baseUrl, path.scope],
             }),
             queryClient.invalidateQueries({
-              queryKey: [
-                "useFileReadDirectory",
-                session.baseUrl,
-                path.container,
-              ],
+              queryKey: ["useFileReadDirectory", session.baseUrl, path.scope],
             }),
           ]);
         } else {
@@ -195,7 +181,7 @@ export function useFileRemoveDirectory(
             queryKey: [
               "useFileReadDirectory",
               session.baseUrl,
-              path.container,
+              path.scope,
               data.path,
             ],
           });

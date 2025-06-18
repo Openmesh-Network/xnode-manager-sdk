@@ -12,7 +12,7 @@ import { awaitRequest } from "./request.js";
 
 export function useProcessList({
   session,
-  container,
+  scope,
   overrides,
 }: UseQueryInput<
   xnode.process.list_input,
@@ -20,17 +20,17 @@ export function useProcessList({
 >): UseQueryOutput<xnode.process.list_output> {
   return useQuery(
     {
-      queryKey: ["useProcessList", session?.baseUrl ?? "", container ?? ""],
-      enabled: !!session && !!container,
+      queryKey: ["useProcessList", session?.baseUrl ?? "", scope ?? ""],
+      enabled: !!session && !!scope,
       refetchInterval: 10_000, // 10 seconds
       queryFn: async () => {
-        if (!session || !container) {
+        if (!session || !scope) {
           return undefined;
         }
 
         return await xnode.process.list({
           session,
-          path: { container },
+          path: { scope },
         });
       },
     },
@@ -40,7 +40,7 @@ export function useProcessList({
 
 export function useProcessLogs({
   session,
-  container,
+  scope,
   process,
   level,
   max,
@@ -54,19 +54,19 @@ export function useProcessLogs({
       queryKey: [
         "useProcessLogs",
         session?.baseUrl ?? "",
-        container ?? "",
+        scope ?? "",
         process ?? "",
       ],
-      enabled: !!session && !!container && !!process,
+      enabled: !!session && !!scope && !!process,
       refetchInterval: 1000, // 1 second
       queryFn: async () => {
-        if (!session || !container || !process) {
+        if (!session || !scope || !process) {
           return undefined;
         }
 
         return await xnode.process.logs({
           session,
-          path: { container, process },
+          path: { scope, process },
           query: { level: level ?? null, max: max ?? null },
         });
       },
@@ -92,13 +92,13 @@ export function useProcessExecute(
         awaitRequest({ request: { session, path: { request_id } } }).then(() =>
           Promise.all([
             queryClient.invalidateQueries({
-              queryKey: ["useProcessList", session.baseUrl, path.container],
+              queryKey: ["useProcessList", session.baseUrl, path.scope],
             }),
             queryClient.invalidateQueries({
               queryKey: [
                 "useProcessLogs",
                 session.baseUrl,
-                path.container,
+                path.scope,
                 path.process,
               ],
             }),
