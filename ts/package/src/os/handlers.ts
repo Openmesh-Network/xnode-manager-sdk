@@ -17,3 +17,9 @@ export type set_output = RequestIdResponse;
 export async function set(input: set_input): Promise<set_output> {
   return SessionPost(input, scope(), "/set");
 }
+
+export type reboot_input = Sessioned<{}>;
+export type reboot_output = RequestIdResponse;
+export async function reboot(input: reboot_input): Promise<reboot_output> {
+  return SessionPost(input, scope(), "/reboot");
+}

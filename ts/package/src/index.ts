@@ -1,6 +1,7 @@
 export * as auth from "./auth/index.js";
 export * as config from "./config/index.js";
 export * as file from "./file/index.js";
+export * as info from "./info/index.js";
 export * as os from "./os/index.js";
 export * as process from "./process/index.js";
 export * as request from "./request/index.js";
