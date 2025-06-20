@@ -62,7 +62,7 @@ export function useConfigContainer({
   );
 }
 
-export function useConfigChange(
+export function useConfigContainerChange(
   input: UseMutationInput<
     xnode.config.change_input,
     xnode.config.change_output
@@ -72,33 +72,38 @@ export function useConfigChange(
   return useMutation(
     {
       mutationFn: xnode.config.change,
-      onSuccess: ({ request_id }, { session, data }) => {
+      onSuccess: ({ request_id }, { session, path: { container } }) => {
         awaitRequest({ request: { session, path: { request_id } } }).then(() =>
-          Promise.all(
-            [
-              queryClient.invalidateQueries({
-                queryKey: ["useConfigContainers", session.baseUrl],
-              }),
-              ...data
-                .reduce((prev, cur) => {
-                  const container =
-                    "Set" in cur
-                      ? cur.Set.container
-                      : "Remove" in cur
-                        ? cur.Remove.container
-                        : "";
-                  if (container) {
-                    prev.add(container);
-                  }
-                  return prev;
-                }, new Set<xnode.utils.String>())
-                .values(),
-            ].map((container) =>
-              queryClient.invalidateQueries({
-                queryKey: ["useConfigContainer", session.baseUrl, container],
-              })
-            )
-          )
+          queryClient.invalidateQueries({
+            queryKey: ["useConfigContainer", session.baseUrl, container],
+          })
+        );
+      },
+    },
+    input?.overrides
+  );
+}
+
+export function useConfigContainerDelete(
+  input: UseMutationInput<
+    xnode.config.delete_input,
+    xnode.config.delete_output
+  > = {}
+): UseMutationOutput<xnode.config.delete_input, xnode.config.delete_output> {
+  const queryClient = useQueryClient();
+  return useMutation(
+    {
+      mutationFn: xnode.config.delete_,
+      onSuccess: ({ request_id }, { session, path: { container } }) => {
+        awaitRequest({ request: { session, path: { request_id } } }).then(() =>
+          Promise.all([
+            queryClient.invalidateQueries({
+              queryKey: ["useConfigContainers", session.baseUrl],
+            }),
+            queryClient.invalidateQueries({
+              queryKey: ["useConfigContainer", session.baseUrl, container],
+            }),
+          ])
         );
       },
     },
