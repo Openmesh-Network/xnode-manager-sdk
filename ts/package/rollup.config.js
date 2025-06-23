@@ -6,14 +6,14 @@ export default [
     output: {
       file: "dist/index.js",
     },
-    external: ["viem", "axios"],
+    external: ["axios"],
   },
   {
     input: "build/index.d.ts",
     output: {
       file: "dist/index.d.ts",
     },
-    external: ["viem", "axios"],
+    external: ["axios"],
     plugins: [dts()],
   },
   {
@@ -22,6 +22,6 @@ export default [
       file: "dist/index.cjs",
       format: "cjs",
     },
-    external: ["viem", "axios"],
+    external: ["axios"],
   },
 ];
