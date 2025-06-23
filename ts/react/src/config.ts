@@ -74,9 +74,14 @@ export function useConfigContainerChange(
       mutationFn: xnode.config.change,
       onSuccess: ({ request_id }, { session, path: { container } }) => {
         awaitRequest({ request: { session, path: { request_id } } }).then(() =>
-          queryClient.invalidateQueries({
-            queryKey: ["useConfigContainer", session.baseUrl, container],
-          })
+          Promise.all([
+            queryClient.invalidateQueries({
+              queryKey: ["useConfigContainers", session.baseUrl],
+            }),
+            queryClient.invalidateQueries({
+              queryKey: ["useConfigContainer", session.baseUrl, container],
+            }),
+          ])
         );
       },
     },
