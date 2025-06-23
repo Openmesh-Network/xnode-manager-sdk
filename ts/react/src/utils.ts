@@ -8,7 +8,9 @@ import {
   useMutation as TanstackUseMutation,
 } from "@tanstack/react-query";
 
-export type QueryOverrides<Output> = UseQueryOptions<Output | undefined>;
+export type QueryOverrides<Output> = Partial<
+  UseQueryOptions<Output | undefined>
+>;
 
 export type UseQueryInput<
   Input extends { session: xnode.utils.Session; path?: Path; query?: Query },
@@ -34,10 +36,6 @@ export function useQuery<Output>(
     ...options,
     ...overrides,
     enabled: options.enabled !== false && overrides?.enabled !== false,
-    refetchInterval:
-      (overrides?.refetchInterval !== undefined
-        ? overrides.refetchInterval
-        : options.refetchInterval) ?? false,
   });
 }
 
