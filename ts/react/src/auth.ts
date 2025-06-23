@@ -1,5 +1,4 @@
 import {
-  type UseQueryInput,
   type QueryOverrides,
   type UseMutationOutput,
   useQuery,
@@ -10,52 +9,27 @@ import {
 import { xnode } from "@openmesh-network/xnode-manager-sdk";
 import { useQueryClient } from "@tanstack/react-query";
 
-export function useAuthSession({
+export function useAuthLogin({
   baseUrl,
-  sig,
+  user,
   overrides,
-}: {
-  baseUrl?: string;
-  sig?: `0x${string}`;
+  ...loginArgs
+}: xnode.auth.login_input & {
   overrides?: QueryOverrides<xnode.auth.login_output>;
 }): UseQueryOutput<xnode.auth.login_output> {
   return useQuery(
     {
-      queryKey: ["useAuthSession", baseUrl ?? "", sig ?? ""],
-      enabled: !!baseUrl && !!sig,
+      queryKey: ["useAuthSession", baseUrl ?? "", user ?? ""],
+      enabled: !!baseUrl && !!user,
       queryFn: async () => {
-        if (!baseUrl || !sig) {
+        if (!baseUrl || !user) {
           return undefined;
         }
 
         return await xnode.auth.login({
           baseUrl,
-          sig,
-        });
-      },
-    },
-    overrides
-  );
-}
-
-export function useAuthScopes({
-  session,
-  overrides,
-}: UseQueryInput<
-  xnode.auth.scopes_input,
-  xnode.auth.scopes_output
->): UseQueryOutput<xnode.auth.scopes_output> {
-  return useQuery(
-    {
-      queryKey: ["useAuthScopes", session?.baseUrl ?? ""],
-      enabled: !!session,
-      queryFn: async () => {
-        if (!session) {
-          return undefined;
-        }
-
-        return await xnode.auth.scopes({
-          session,
+          user,
+          ...loginArgs,
         });
       },
     },

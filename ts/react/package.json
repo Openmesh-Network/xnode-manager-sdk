@@ -1,6 +1,6 @@
 {
   "name": "@openmesh-network/xnode-manager-sdk-react",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Openmesh-Network/xnode-manager-sdk.git"
@@ -16,7 +16,7 @@
     "prepublishOnly": "tsc && rollup -c"
   },
   "peerDependencies": {
-    "@openmesh-network/xnode-manager-sdk": "^1.0.3",
+    "@openmesh-network/xnode-manager-sdk": "^1.0.4",
     "@tanstack/react-query": "^5",
     "react": "^18 || ^19",
     "typescript": ">=5.0.4"
@@ -29,10 +29,10 @@
   "devDependencies": {
     "@types/node": "^24.0.3",
     "@types/react": "^19.1.8",
-    "@typescript-eslint/parser": "^8.34.1",
+    "@typescript-eslint/parser": "^8.35.0",
     "eslint": "^9.29.0",
     "eslint-config-prettier": "^10.1.5",
-    "prettier": "^3.5.3",
+    "prettier": "^3.6.0",
     "rollup": "^4.44.0",
     "rollup-plugin-dts": "^6.2.1"
   }
