@@ -14,7 +14,7 @@ export function useAuthLogin({
   user,
   overrides,
   ...loginArgs
-}: xnode.auth.login_input & {
+}: Partial<xnode.auth.login_input> & {
   overrides?: QueryOverrides<xnode.auth.login_output>;
 }): UseQueryOutput<xnode.auth.login_output> {
   return useQuery(
