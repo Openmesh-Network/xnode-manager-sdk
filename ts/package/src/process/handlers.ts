@@ -9,7 +9,7 @@ export function scope() {
 }
 
 export type list_input = Sessioned<{ path: { scope: rust.String } }>;
-export type list_output = Process[];
+export type list_output = rust.Vec<Process>;
 export async function list(input: list_input): Promise<list_output> {
   return SessionGet(input, scope(), (path) => `/${path.scope}/list`);
 }
@@ -18,7 +18,7 @@ export type logs_input = Sessioned<{
   path: { scope: rust.String; process: rust.String };
   query: LogQuery;
 }>;
-export type logs_output = Log[];
+export type logs_output = rust.Vec<Log>;
 export async function logs(input: logs_input): Promise<logs_output> {
   return SessionGet(
     input,

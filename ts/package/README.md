@@ -4,7 +4,7 @@ TypeScript Software Development Kit for interacting with Xnode Manager.
 
 ## Related Repos
 
-https://github.com/Openmesh-Network/xnode-manager/
+https://github.com/Openmesh-Network/xnode-manager
 
 ## Versioning
 

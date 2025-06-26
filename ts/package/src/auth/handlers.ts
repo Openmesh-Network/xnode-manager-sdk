@@ -26,11 +26,11 @@ export async function login({
 
   await axiosInstance.post(`${baseUrl}${scope()}/api/login`, loginParams);
 
-  return { axiosInstance, baseUrl } satisfies login_output;
+  return { axiosInstance, baseUrl };
 }
 
 export type logout_input = Sessioned<{}>;
 export type logout_output = void;
 export async function logout(input: logout_input): Promise<logout_output> {
-  return SessionPost(input, scope(), "/xnode-auth/api/logout");
+  return SessionPost(input, scope(), "/api/logout");
 }

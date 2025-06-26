@@ -1,6 +1,6 @@
 {
   "name": "@openmesh-network/xnode-manager-sdk",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Openmesh-Network/xnode-manager-sdk.git"
