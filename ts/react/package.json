@@ -1,10 +1,11 @@
 {
   "name": "@openmesh-network/xnode-manager-sdk-react",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Openmesh-Network/xnode-manager-sdk.git"
   },
+  "license": "MIT",
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -16,7 +17,7 @@
     "prepublishOnly": "tsc && rollup -c"
   },
   "peerDependencies": {
-    "@openmesh-network/xnode-manager-sdk": "^1.0.5",
+    "@openmesh-network/xnode-manager-sdk": "^1.0.6",
     "@tanstack/react-query": "^5",
     "react": "^18 || ^19",
     "typescript": ">=5.0.4"

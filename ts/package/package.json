@@ -5,6 +5,7 @@
     "type": "git",
     "url": "git+https://github.com/Openmesh-Network/xnode-manager-sdk.git"
   },
+  "license": "MIT",
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",

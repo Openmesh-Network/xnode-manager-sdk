@@ -3,6 +3,7 @@ import { xnode } from "@openmesh-network/xnode-manager-sdk";
 
 export function useUsageCpu({
   session,
+  scope,
   overrides,
 }: UseQueryInput<
   xnode.usage.cpu_input,
@@ -10,16 +11,17 @@ export function useUsageCpu({
 >): UseQueryOutput<xnode.usage.cpu_output> {
   return useQuery(
     {
-      queryKey: ["useUsageCpu", session?.baseUrl ?? ""],
-      enabled: !!session,
+      queryKey: ["useUsageCpu", session?.baseUrl ?? "", scope ?? ""],
+      enabled: !!session && !!scope,
       refetchInterval: 1000, // 1 second
       queryFn: async () => {
-        if (!session) {
+        if (!session || !scope) {
           return undefined;
         }
 
         return await xnode.usage.cpu({
           session,
+          path: { scope },
         });
       },
     },
@@ -29,6 +31,7 @@ export function useUsageCpu({
 
 export function useUsageMemory({
   session,
+  scope,
   overrides,
 }: UseQueryInput<
   xnode.usage.memory_input,
@@ -36,16 +39,17 @@ export function useUsageMemory({
 >): UseQueryOutput<xnode.usage.memory_output> {
   return useQuery(
     {
-      queryKey: ["useUsageMemory", session?.baseUrl ?? ""],
-      enabled: !!session,
+      queryKey: ["useUsageMemory", session?.baseUrl ?? "", scope ?? ""],
+      enabled: !!session && !!scope,
       refetchInterval: 1000, // 1 second
       queryFn: async () => {
-        if (!session) {
+        if (!session || !scope) {
           return undefined;
         }
 
         return await xnode.usage.memory({
           session,
+          path: { scope },
         });
       },
     },
@@ -55,6 +59,7 @@ export function useUsageMemory({
 
 export function useUsageDisk({
   session,
+  scope,
   overrides,
 }: UseQueryInput<
   xnode.usage.disk_input,
@@ -62,16 +67,17 @@ export function useUsageDisk({
 >): UseQueryOutput<xnode.usage.disk_output> {
   return useQuery(
     {
-      queryKey: ["useUsageDisk", session?.baseUrl ?? ""],
-      enabled: !!session,
+      queryKey: ["useUsageDisk", session?.baseUrl ?? "", scope ?? ""],
+      enabled: !!session && !!scope,
       refetchInterval: 1000, // 1 second
       queryFn: async () => {
-        if (!session) {
+        if (!session || !scope) {
           return undefined;
         }
 
         return await xnode.usage.disk({
           session,
+          path: { scope },
         });
       },
     },
