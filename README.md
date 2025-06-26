@@ -8,7 +8,7 @@ https://github.com/Openmesh-Network/xnode-manager
 
 ## Supported Programming Languages And Frameworks
 
-[Rust](./rust/package/)
+[Rust](./rust/package/)  
 [TypeScript](./ts/package/)  
 [React](./ts/react/)
 
