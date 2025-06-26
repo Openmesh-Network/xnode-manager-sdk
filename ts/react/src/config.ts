@@ -35,24 +35,28 @@ export function useConfigContainers({
   );
 }
 
-export function useConfigContainer({
+export function useConfigContainerGet({
   session,
   container,
   overrides,
 }: UseQueryInput<
-  xnode.config.container_input,
-  xnode.config.container_output
->): UseQueryOutput<xnode.config.container_output> {
+  xnode.config.get_input,
+  xnode.config.get_output
+>): UseQueryOutput<xnode.config.get_output> {
   return useQuery(
     {
-      queryKey: ["useConfigContainer", session?.baseUrl ?? "", container ?? ""],
+      queryKey: [
+        "useConfigContainerGet",
+        session?.baseUrl ?? "",
+        container ?? "",
+      ],
       enabled: !!session && !!container,
       queryFn: async () => {
         if (!session || !container) {
           return undefined;
         }
 
-        return await xnode.config.container({
+        return await xnode.config.get({
           session,
           path: { container },
         });
@@ -62,16 +66,13 @@ export function useConfigContainer({
   );
 }
 
-export function useConfigContainerChange(
-  input: UseMutationInput<
-    xnode.config.change_input,
-    xnode.config.change_output
-  > = {}
-): UseMutationOutput<xnode.config.change_input, xnode.config.change_output> {
+export function useConfigContainerSet(
+  input: UseMutationInput<xnode.config.set_input, xnode.config.set_output> = {}
+): UseMutationOutput<xnode.config.set_input, xnode.config.set_output> {
   const queryClient = useQueryClient();
   return useMutation(
     {
-      mutationFn: xnode.config.change,
+      mutationFn: xnode.config.set,
       onSuccess: ({ request_id }, { session, path: { container } }) => {
         awaitRequest({ request: { session, path: { request_id } } }).then(() =>
           Promise.all([
@@ -79,7 +80,7 @@ export function useConfigContainerChange(
               queryKey: ["useConfigContainers", session.baseUrl],
             }),
             queryClient.invalidateQueries({
-              queryKey: ["useConfigContainer", session.baseUrl, container],
+              queryKey: ["useConfigContainerGet", session.baseUrl, container],
             }),
           ])
         );
@@ -89,16 +90,16 @@ export function useConfigContainerChange(
   );
 }
 
-export function useConfigContainerDelete(
+export function useConfigContainerRemove(
   input: UseMutationInput<
-    xnode.config.delete_input,
-    xnode.config.delete_output
+    xnode.config.remove_input,
+    xnode.config.remove_output
   > = {}
-): UseMutationOutput<xnode.config.delete_input, xnode.config.delete_output> {
+): UseMutationOutput<xnode.config.remove_input, xnode.config.remove_output> {
   const queryClient = useQueryClient();
   return useMutation(
     {
-      mutationFn: xnode.config.delete_,
+      mutationFn: xnode.config.remove,
       onSuccess: ({ request_id }, { session, path: { container } }) => {
         awaitRequest({ request: { session, path: { request_id } } }).then(() =>
           Promise.all([
@@ -106,7 +107,7 @@ export function useConfigContainerDelete(
               queryKey: ["useConfigContainers", session.baseUrl],
             }),
             queryClient.invalidateQueries({
-              queryKey: ["useConfigContainer", session.baseUrl, container],
+              queryKey: ["useConfigContainerGet", session.baseUrl, container],
             }),
           ])
         );
