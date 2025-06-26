@@ -17,7 +17,7 @@ export async function request_info(
   return SessionGet<request_info_output, request_info_input["path"]>(
     input,
     scope(),
-    (path) => `/info/${path.request_id}`
+    (path) => `/${path.request_id}/info`
   ).then((data) => {
     return { ...data, commands: data.commands.sort() };
   });
@@ -33,6 +33,6 @@ export async function command_info(
   return SessionGet(
     input,
     scope(),
-    (path) => `/info/${path.request_id}/${path.command}`
+    (path) => `/${path.request_id}/command/${path.command}/info`
   );
 }

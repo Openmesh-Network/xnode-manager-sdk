@@ -16,35 +16,37 @@ export async function containers(
   return SessionGet(input, scope(), "/containers");
 }
 
-export type container_input = Sessioned<{
+export type get_input = Sessioned<{
   path: { container: rust.String };
 }>;
-export type container_output = ContainerConfiguration;
-export async function container(
-  input: container_input
-): Promise<container_output> {
-  return SessionGet(input, scope(), (path) => `/container/${path.container}`);
-}
-
-export type change_input = Sessioned<{
-  path: { container: rust.String };
-  data: ContainerChange;
-}>;
-export type change_output = RequestIdResponse;
-export async function change(input: change_input): Promise<change_output> {
-  return SessionPost(
+export type get_output = ContainerConfiguration;
+export async function get(input: get_input): Promise<get_output> {
+  return SessionGet(
     input,
     scope(),
-    (path) => `/container/${path.container}/change`
+    (path) => `/container/${path.container}/get`
   );
 }
 
-export type delete_input = Sessioned<{ path: { container: rust.String } }>;
-export type delete_output = RequestIdResponse;
-export async function delete_(input: delete_input): Promise<delete_output> {
+export type set_input = Sessioned<{
+  path: { container: rust.String };
+  data: ContainerChange;
+}>;
+export type set_output = RequestIdResponse;
+export async function set(input: set_input): Promise<set_output> {
   return SessionPost(
     input,
     scope(),
-    (path) => `/container/${path.container}/delete`
+    (path) => `/container/${path.container}/set`
+  );
+}
+
+export type remove_input = Sessioned<{ path: { container: rust.String } }>;
+export type remove_output = RequestIdResponse;
+export async function remove(input: remove_input): Promise<remove_output> {
+  return SessionPost(
+    input,
+    scope(),
+    (path) => `/container/${path.container}/remove`
   );
 }

@@ -8,19 +8,19 @@ export function scope() {
 export type cpu_input = Sessioned<{}>;
 export type cpu_output = CpuUsage[];
 export async function cpu(input: cpu_input): Promise<cpu_output> {
-  return SessionGet(input, scope(), "/cpu");
+  return SessionGet(input, scope(), "/host/cpu");
 }
 
 export type memory_input = Sessioned<{}>;
 export type memory_output = MemoryUsage;
 export async function memory(input: memory_input): Promise<memory_output> {
-  return SessionGet(input, scope(), "/memory");
+  return SessionGet(input, scope(), "/host/memory");
 }
 
 export type disk_input = Sessioned<{}>;
 export type disk_output = DiskUsage[];
 export async function disk(input: disk_input): Promise<disk_output> {
-  return SessionGet<disk_output>(input, scope(), "/disk").then((data) =>
+  return SessionGet<disk_output>(input, scope(), "/host/disk").then((data) =>
     data.filter((d) => d.mount_point.startsWith("/mnt"))
   );
 }

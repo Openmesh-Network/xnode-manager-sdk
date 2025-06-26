@@ -11,7 +11,7 @@ export function scope() {
 export type list_input = Sessioned<{ path: { scope: rust.String } }>;
 export type list_output = Process[];
 export async function list(input: list_input): Promise<list_output> {
-  return SessionGet(input, scope(), (path) => `/list/${path.scope}`);
+  return SessionGet(input, scope(), (path) => `/${path.scope}/list`);
 }
 
 export type logs_input = Sessioned<{
@@ -23,7 +23,7 @@ export async function logs(input: logs_input): Promise<logs_output> {
   return SessionGet(
     input,
     scope(),
-    (path) => `/logs/${path.scope}/${path.process}`
+    (path) => `/${path.scope}/${path.process}/logs`
   );
 }
 
@@ -36,6 +36,6 @@ export async function execute(input: execute_input): Promise<execute_output> {
   return SessionPost(
     input,
     scope(),
-    (path) => `/execute/${path.scope}/${path.process}`
+    (path) => `/${path.scope}/${path.process}/execute`
   );
 }
