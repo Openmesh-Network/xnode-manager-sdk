@@ -13,6 +13,7 @@ pub fn scope() -> String {
     "/file".to_string()
 }
 
+#[derive(Debug, Clone, PartialEq)]
 pub struct ReadFilePath {
     pub scope: String,
 }
@@ -25,6 +26,7 @@ pub async fn read_file(input: ReadFileInput<'_>) -> SessionGetOutput<ReadFileOut
     .await
 }
 
+#[derive(Debug, Clone, PartialEq)]
 pub struct WriteFilePath {
     pub scope: String,
 }
@@ -37,6 +39,7 @@ pub async fn write_file(input: WriteFileInput<'_>) -> SessionPostOutput<WriteFil
     .await
 }
 
+#[derive(Debug, Clone, PartialEq)]
 pub struct RemoveFilePath {
     pub scope: String,
 }
@@ -49,7 +52,7 @@ pub async fn remove_file(input: RemoveFileInput<'_>) -> SessionPostOutput<Remove
     .await
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct ReadDirectoryPath {
     pub scope: String,
 }
@@ -64,7 +67,7 @@ pub async fn read_directory(
     .await
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct CreateDirectoryPath {
     pub scope: String,
 }
@@ -79,7 +82,7 @@ pub async fn create_directory(
     .await
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct RemoveDirectoryPath {
     pub scope: String,
 }

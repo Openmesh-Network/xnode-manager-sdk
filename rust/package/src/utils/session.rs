@@ -5,7 +5,9 @@ use reqwest::{
 use serde::{Serialize, de::DeserializeOwned};
 use serde_json::to_value;
 
-#[derive(Debug)]
+use crate::utils::Error;
+
+#[derive(Debug, Clone)]
 pub struct Session {
     pub reqwest_client: Client,
     pub base_url: String,
@@ -71,26 +73,20 @@ impl BodyData for Empty {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct SessionGetInput<'a, Path, Query: QueryData> {
     pub session: &'a Session,
     pub path: Path,
     pub query: Query,
 }
 pub type SessionGetOutput<Output> = Result<Output, Error>;
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct SessionPostInput<'a, Path, Data: BodyData> {
     pub session: &'a Session,
     pub path: Path,
     pub data: Data,
 }
 pub type SessionPostOutput<Output> = Result<Output, Error>;
-#[derive(Debug)]
-pub enum Error {
-    XnodeManagerSDKError,
-    ReqwestError(reqwest::Error),
-    SerdeJsonError(serde_json::Error),
-}
 
 impl<'a> SessionGetInput<'a, Empty, Empty> {
     pub fn new(session: &'a Session) -> Self {

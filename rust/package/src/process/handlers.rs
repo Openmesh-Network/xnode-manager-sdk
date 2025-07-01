@@ -11,6 +11,7 @@ pub fn scope() -> String {
     "/process".to_string()
 }
 
+#[derive(Debug, Clone, PartialEq)]
 pub struct ListPath {
     pub scope: String,
 }
@@ -23,7 +24,7 @@ pub async fn list(input: ListInput<'_>) -> SessionGetOutput<ListOutput> {
     .await
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct LogsPath {
     pub scope: String,
     pub process: String,
@@ -41,7 +42,7 @@ pub async fn logs(input: LogsInput<'_>) -> SessionGetOutput<LogsOutput> {
     .await
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct ExecutePath {
     pub scope: String,
     pub process: String,

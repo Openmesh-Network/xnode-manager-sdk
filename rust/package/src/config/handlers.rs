@@ -17,7 +17,7 @@ pub async fn containers(input: ContainersInput<'_>) -> SessionGetOutput<Containe
     session_get(input, scope(), |_path| "/containers").await
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct GetPath {
     pub container: String,
 }
@@ -30,7 +30,7 @@ pub async fn get(input: GetInput<'_>) -> SessionGetOutput<GetOutput> {
     .await
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct SetPath {
     pub container: String,
 }
@@ -43,7 +43,7 @@ pub async fn set(input: SetInput<'_>) -> SessionPostOutput<SetOutput> {
     .await
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct RemovePath {
     pub container: String,
 }

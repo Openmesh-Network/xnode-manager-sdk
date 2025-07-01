@@ -1,13 +1,13 @@
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
-use crate::utils::{Empty, Session, SessionPostInput, SessionPostOutput, session_post};
+use crate::utils::{Empty, Error, Session, SessionPostInput, SessionPostOutput, session_post};
 
 pub fn scope() -> String {
     "/xnode-auth".to_string()
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct User {
     user: String,
     signature: Option<String>,
@@ -30,20 +30,24 @@ impl User {
         }
     }
 }
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct LoginInput {
     pub base_url: String,
     pub user: User,
 }
-pub type LoginOutput = Result<Session, reqwest::Error>;
+pub type LoginOutput = Result<Session, Error>;
 pub async fn login(input: LoginInput) -> LoginOutput {
-    let client = Client::builder().cookie_store(true).build()?;
+    let client = Client::builder()
+        .cookie_store(true)
+        .build()
+        .map_err(Error::ReqwestError)?;
 
     client
         .post(format!("{}{}/api/login", input.base_url, scope()))
         .json(&input.user)
         .send()
-        .await?;
+        .await
+        .map_err(Error::ReqwestError)?;
 
     Ok(Session {
         reqwest_client: client,

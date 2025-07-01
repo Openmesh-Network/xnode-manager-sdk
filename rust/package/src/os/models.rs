@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct OSChange {
     pub flake: Option<String>,
     pub update_inputs: Option<Vec<String>>,
@@ -11,7 +11,7 @@ pub struct OSChange {
     pub user_passwd: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct OSConfiguration {
     pub flake: String,
     pub flake_lock: String,

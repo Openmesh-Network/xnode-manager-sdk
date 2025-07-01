@@ -7,7 +7,7 @@ pub fn scope() -> String {
     "/usage".to_string()
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct CpuPath {
     pub scope: String,
 }
@@ -20,7 +20,7 @@ pub async fn cpu(input: CpuInput<'_>) -> SessionGetOutput<CpuOutput> {
     .await
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct MemoryPath {
     pub scope: String,
 }
@@ -33,7 +33,7 @@ pub async fn memory(input: MemoryInput<'_>) -> SessionGetOutput<MemoryOutput> {
     .await
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct DiskPath {
     pub scope: String,
 }
