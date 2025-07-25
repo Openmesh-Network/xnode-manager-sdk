@@ -77,7 +77,9 @@ export async function awaitRequest({
   let request_info: xnode.request.request_info_output | undefined;
   while (!request_info?.result) {
     await new Promise((resolve) => setTimeout(resolve, pollInterval ?? 1000));
-    request_info = await xnode.request.request_info(request);
+    request_info = await xnode.request
+      .request_info(request)
+      .catch(() => undefined);
   }
 
   return request_info;
