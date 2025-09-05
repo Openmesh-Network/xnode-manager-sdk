@@ -36,6 +36,17 @@ pub struct RemoveDirectory {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+pub struct GetPermissions {
+    pub path: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+pub struct SetPermissions {
+    pub path: String,
+    pub permissions: Vec<Permission>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct File {
     pub content: Output,
 }
@@ -46,4 +57,20 @@ pub struct Directory {
     pub files: Vec<String>,
     pub symlinks: Vec<String>,
     pub unknown: Vec<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+pub enum Entity {
+    User(u32),
+    Group(u32),
+    Any,
+    Unknown,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+pub struct Permission {
+    pub granted_to: Entity,
+    pub read: bool,
+    pub write: bool,
+    pub execute: bool,
 }

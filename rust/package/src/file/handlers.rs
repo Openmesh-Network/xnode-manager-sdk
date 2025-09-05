@@ -1,7 +1,10 @@
 use crate::{
-    file::models::{
-        CreateDirectory, Directory, File, ReadDirectory, ReadFile, RemoveDirectory, RemoveFile,
-        WriteFile,
+    file::{
+        GetPermissions, Permission, SetPermissions,
+        models::{
+            CreateDirectory, Directory, File, ReadDirectory, ReadFile, RemoveDirectory, RemoveFile,
+            WriteFile,
+        },
     },
     utils::{
         Empty, SessionGetInput, SessionGetOutput, SessionPostInput, SessionPostOutput, session_get,
@@ -93,6 +96,36 @@ pub async fn remove_directory(
 ) -> SessionPostOutput<RemoveDirectoryOutput> {
     session_post(input, scope(), |path| {
         format!("/{scope}/remove_directory", scope = path.scope)
+    })
+    .await
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct GetPermissionsPath {
+    pub scope: String,
+}
+pub type GetPermissionsInput<'a> = SessionGetInput<'a, GetPermissionsPath, GetPermissions>;
+pub type GetPermissionsOutput = Vec<Permission>;
+pub async fn get_permissions(
+    input: GetPermissionsInput<'_>,
+) -> SessionGetOutput<GetPermissionsOutput> {
+    session_get(input, scope(), |path| {
+        format!("/{scope}/get_permissions", scope = path.scope)
+    })
+    .await
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct SetPermissionsPath {
+    pub scope: String,
+}
+pub type SetPermissionsInput<'a> = SessionPostInput<'a, SetPermissionsPath, SetPermissions>;
+pub type SetPermissionsOutput = Empty;
+pub async fn set_permissions(
+    input: SetPermissionsInput<'_>,
+) -> SessionPostOutput<SetPermissionsOutput> {
+    session_post(input, scope(), |path| {
+        format!("/{scope}/set_permissions", scope = path.scope)
     })
     .await
 }
