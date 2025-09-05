@@ -5,10 +5,13 @@ import type {
   CreateDirectory,
   Directory,
   File,
+  GetPermissions,
+  Permission,
   ReadDirectory,
   ReadFile,
   RemoveDirectory,
   RemoveFile,
+  SetPermissions,
   WriteFile,
 } from "./models.js";
 
@@ -87,5 +90,31 @@ export async function remove_directory(
     input,
     scope(),
     (path) => `/${path.scope}/remove_directory`
+  );
+}
+
+export type get_permissions_input = Sessioned<{
+  path: { scope: rust.String };
+  query: GetPermissions;
+}>;
+export type get_permissions_output = rust.Vec<Permission>;
+export async function get_permissions(
+  input: get_permissions_input
+): Promise<get_permissions_output> {
+  return SessionGet(input, scope(), (path) => `/${path.scope}/get_permissions`);
+}
+
+export type set_permissions_input = Sessioned<{
+  path: { scope: rust.String };
+  data: SetPermissions;
+}>;
+export type set_permissions_output = void;
+export async function set_permissions(
+  input: set_permissions_input
+): Promise<set_permissions_output> {
+  return SessionPost(
+    input,
+    scope(),
+    (path) => `/${path.scope}/set_permissions`
   );
 }

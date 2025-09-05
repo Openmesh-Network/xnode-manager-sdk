@@ -1,6 +1,6 @@
 {
   "name": "@openmesh-network/xnode-manager-sdk",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Openmesh-Network/xnode-manager-sdk.git"
@@ -26,12 +26,12 @@
     }
   },
   "devDependencies": {
-    "@types/node": "^24.2.1",
-    "@typescript-eslint/parser": "^8.39.1",
-    "eslint": "^9.33.0",
+    "@types/node": "^24.3.1",
+    "@typescript-eslint/parser": "^8.42.0",
+    "eslint": "^9.34.0",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.6.2",
-    "rollup": "^4.46.2",
-    "rollup-plugin-dts": "^6.2.1"
+    "rollup": "^4.50.0",
+    "rollup-plugin-dts": "^6.2.3"
   }
 }

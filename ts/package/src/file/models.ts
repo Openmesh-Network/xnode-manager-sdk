@@ -28,6 +28,15 @@ export interface RemoveDirectory {
   make_empty: rust.bool;
 }
 
+export interface GetPermissions {
+  path: rust.String;
+}
+
+export interface SetPermissions {
+  path: rust.String;
+  permissions: rust.Vec<Permission>;
+}
+
 export interface File {
   content: Output;
 }
@@ -37,4 +46,17 @@ export interface Directory {
   files: rust.Vec<rust.String>;
   symlinks: rust.Vec<rust.String>;
   unknown: rust.Vec<rust.String>;
+}
+
+export type Entity =
+  | { User: rust.u32 }
+  | { Group: rust.u32 }
+  | "Any"
+  | "Unknown";
+
+export interface Permission {
+  granted_to: Entity;
+  read: rust.bool;
+  write: rust.bool;
+  execute: rust.bool;
 }
