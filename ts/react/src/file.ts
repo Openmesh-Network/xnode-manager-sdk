@@ -191,3 +191,66 @@ export function useFileRemoveDirectory(
     input?.overrides
   );
 }
+
+export function useFileGetPermissions({
+  session,
+  scope,
+  path,
+  overrides,
+}: UseQueryInput<
+  xnode.file.get_permissions_input,
+  xnode.file.get_permissions_output
+>): UseQueryOutput<xnode.file.get_permissions_output> {
+  return useQuery(
+    {
+      queryKey: [
+        "useFileGetPermissions",
+        session?.baseUrl ?? "",
+        scope ?? "",
+        path ?? "",
+      ],
+      enabled: !!session && !!scope && !!path,
+      refetchInterval: 10_000, // 10 seconds
+      queryFn: async () => {
+        if (!session || !scope || !path) {
+          return undefined;
+        }
+
+        return await xnode.file.get_permissions({
+          session,
+          path: { scope },
+          query: { path },
+        });
+      },
+    },
+    overrides
+  );
+}
+
+export function useFileSetPermissions(
+  input: UseMutationInput<
+    xnode.file.set_permissions_input,
+    xnode.file.set_permissions_output
+  > = {}
+): UseMutationOutput<
+  xnode.file.set_permissions_input,
+  xnode.file.set_permissions_output
+> {
+  const queryClient = useQueryClient();
+  return useMutation(
+    {
+      mutationFn: xnode.file.set_permissions,
+      onSuccess: (_, { session, path, data }) => {
+        queryClient.invalidateQueries({
+          queryKey: [
+            "useFileGetPermissions",
+            session.baseUrl,
+            path.scope,
+            data.path,
+          ],
+        });
+      },
+    },
+    input?.overrides
+  );
+}

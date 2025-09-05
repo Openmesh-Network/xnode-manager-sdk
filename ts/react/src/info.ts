@@ -28,3 +28,59 @@ export function useInfoFlake({
     overrides
   );
 }
+
+export function useInfoUsers({
+  session,
+  scope,
+  overrides,
+}: UseQueryInput<
+  xnode.info.users_input,
+  xnode.info.users_output
+>): UseQueryOutput<xnode.info.users_output> {
+  return useQuery(
+    {
+      queryKey: ["useInfoUsers", session?.baseUrl ?? "", scope ?? ""],
+      enabled: !!session && !!scope,
+      refetchInterval: 60_000, // 1 minute
+      queryFn: async () => {
+        if (!session || !scope) {
+          return undefined;
+        }
+
+        return await xnode.info.users({
+          session,
+          path: { scope },
+        });
+      },
+    },
+    overrides
+  );
+}
+
+export function useInfoGroups({
+  session,
+  scope,
+  overrides,
+}: UseQueryInput<
+  xnode.info.groups_input,
+  xnode.info.groups_output
+>): UseQueryOutput<xnode.info.groups_output> {
+  return useQuery(
+    {
+      queryKey: ["useInfoGroups", session?.baseUrl ?? "", scope ?? ""],
+      enabled: !!session && !!scope,
+      refetchInterval: 60_000, // 1 minute
+      queryFn: async () => {
+        if (!session || !scope) {
+          return undefined;
+        }
+
+        return await xnode.info.groups({
+          session,
+          path: { scope },
+        });
+      },
+    },
+    overrides
+  );
+}
